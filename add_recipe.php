@@ -56,17 +56,28 @@
             background-color: #654321;
         }
     </style>
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const status = urlParams.get('status');
+            if (status === 'success') {
+                alert('New recipe added successfully!');
+            } else if (status === 'error') {
+                alert('There was an error adding the recipe. Please try again.');
+            }
+        }
+    </script>
 </head>
 <body>
 
 <div class="header">
     <h1>Delicious Recipes</h1>
-    <button onclick="location.href='index.html';">Return home</button>
+    <button onclick="location.href='index.php';">Return home</button>
 </div>
 
 <div class="container" id="recipe-container">
     <h2>Add Recipe</h2>
-    <form action="add_recipe.php" method="post" enctype="multipart/form-data">
+    <form action="submit_recipe.php" method="post" enctype="multipart/form-data">
         <input type="text" name="recipe_name" placeholder="Recipe Name" required>
         <input type="file" name="recipe_image" accept="image/*">
         <textarea name="ingredients" placeholder="Ingredients" required></textarea>
