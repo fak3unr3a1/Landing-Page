@@ -1,0 +1,41 @@
+Administrator:
+
+Manage user accounts: Create, delete, and update user accounts.
+Manage recipes: Add, edit, and delete recipes.
+Manage categories: Create, edit, and delete recipe categories.
+View and moderate user-generated content.
+Monitor system activities and logs.
+Manage system settings and configurations.
+Client (Regular User):
+
+Register and create an account.
+Log in and log out of the system.
+View recipes: Search, browse, and view recipes.
+Filter recipes by categories, ingredients, etc.
+Save favorite recipes.
+Rate and review recipes.
+Share recipes on social media platforms.
+Access personalized recommendations.
+Manage their profile: Update personal information, change password, etc.
+Recipe Owners:
+
+Register and create an account (same as regular users).
+Log in and log out of the system (same as regular users).
+Create and publish new recipes.
+Edit and update their own recipes.
+Delete their own recipes.
+View statistics and analytics for their recipes (e.g., views, ratings).
+Receive notifications about recipe activity (e.g., comments, ratings).
+Moderator:
+
+Moderate user-generated content: Approve or reject submitted recipes, reviews, and comments.
+Enforce community guidelines and policies.
+Flag inappropriate content for further review.
+Communicate with users regarding content moderation issues.
+Guest:
+
+Browse and search for recipes without registering or logging in.
+View basic information about recipes (e.g., title, description).
+View recipe categories and browse recipes by category.
+View popular and featured recipes.
+Access limited features compared to registered users (e.g., cannot save favorites, rate recipes).
