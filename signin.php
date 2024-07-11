@@ -1,5 +1,5 @@
 <?php
-// signin.php
+session_start();
 include 'db.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -7,16 +7,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST['password'];
 
     // Fetch user data
-    $sql = "SELECT id, password FROM users WHERE username='$username'";
+    $sql = "SELECT id, password, user_group FROM users WHERE username='$username'";
     $result = $conn->query($sql);
 
     if ($result->num_rows == 1) {
         $row = $result->fetch_assoc();
         if (password_verify($password, $row['password'])) {
-            // Password is correct, start a session and store user ID
-            session_start();
-            $_SESSION['user_id'] = $row['id'];
-            header("Location: index.html"); // Redirect to home page after successful login
+            // Password is correct, start a session and store user ID and user group
+            $_SESSION['id'] = $row['id'];
+            $_SESSION['username'] = $username;
+            $_SESSION['user_group'] = $row['user_group'];
+
+            // Redirect based on user group
+            if ($row['user_group'] == 2) {
+                header("Location: index.php");
+            } elseif ($row['user_group'] == 3) {
+                header("Location: recipe_owner_dashboard.php");
+            }
+            exit();
         } else {
             echo "Invalid password.";
         }

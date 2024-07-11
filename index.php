@@ -258,14 +258,7 @@
   </style>
 </head>
 <body>
-  
-  <div class="header">
-    <h1>Delicious Recipes</h1>
-    <div class="header-buttons">
-    <button onclick="location.href='add_recipe.php';">Add Recipe</button>
 
-    </div>
-  </div>
 
   
 
@@ -302,6 +295,52 @@
       <h3>Chicken Tikka Masala</h3>
       <p>A flavorful Indian dish with tender chicken pieces in a creamy tomato-based sauce.</p>
       <a href="#">View Recipe</a>
+    </div>
+  </div>
+  <?php
+$servername = "127.0.0.1";
+$username = "root";
+$password = "";
+$dbname = "recipe_app";
+$port = 3307; // Use the correct MySQL port
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname, $port);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Select the database
+if (!$conn->select_db($dbname)) {
+    die("Database selection failed: " . $conn->error);
+}
+
+// Fetch recipes
+$sql = "SELECT id, recipe_name, recipe_image, ingredients, instructions FROM recipes";
+$result = $conn->query($sql);
+?>
+
+  <div class="fold">
+    <h2>Our Recipes</h2>
+    <p>Discover our collection of delicious recipes, curated just for you.</p>
+    <div class="recipe-list">
+      <?php
+      if ($result->num_rows > 0) {
+          while($row = $result->fetch_assoc()) {
+              echo "<div class='recipe-card'>";
+              echo "<img src='" . $row["recipe_image"] . "' alt='" . $row["recipe_name"] . "'>";
+              echo "<h3>" . $row["recipe_name"] . "</h3>";
+              echo "<p>Ingredients: " . $row["ingredients"] . "</p>";
+              echo "<p>Instructions: " . $row["instructions"] . "</p>";
+              echo "</div>";
+          }
+      } else {
+          echo "No recipes found.";
+      }
+      $conn->close();
+      ?>
     </div>
   </div>
 

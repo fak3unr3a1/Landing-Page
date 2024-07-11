@@ -1,3 +1,11 @@
+<?php
+session_start();
+if (!isset($_SESSION['user_id']) || $_SESSION['user_group'] != 3) {
+    header('Location: login.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,10 +68,15 @@
         window.onload = function() {
             const urlParams = new URLSearchParams(window.location.search);
             const status = urlParams.get('status');
-            if (status === 'success') {
+            const type = urlParams.get('type');
+            if (status === 'success' && type === 'recipe') {
                 alert('New recipe added successfully!');
-            } else if (status === 'error') {
+            } else if (status === 'error' && type === 'recipe') {
                 alert('There was an error adding the recipe. Please try again.');
+            } else if (status === 'success' && type === 'category') {
+                alert('New category added successfully!');
+            } else if (status === 'error' && type === 'category') {
+                alert('There was an error adding the category. Please try again.');
             }
         }
     </script>
@@ -72,7 +85,7 @@
 
 <div class="header">
     <h1>Delicious Recipes</h1>
-    <button onclick="location.href='index.php';">Return home</button>
+    <button onclick="location.href='recipe_owner_dashboard.php';">Return home</button>
 </div>
 
 <div class="container" id="recipe-container">
@@ -98,7 +111,16 @@
             $conn->close();
             ?>
         </select>
+        <input type="hidden" name="id" value="<?php echo $_SESSION['id']; ?>">
         <input type="submit" value="Add Recipe">
+    </form>
+</div>
+
+<div class="container" id="category-container">
+    <h2>Add Category</h2>
+    <form action="add_category.php" method="post">
+        <input type="text" name="category_name" placeholder="Category Name" required>
+        <input type="submit" value="Add Category">
     </form>
 </div>
 

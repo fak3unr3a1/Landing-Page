@@ -94,6 +94,10 @@
         <input type="password" name="password" placeholder="Password" required>
         <input type="password" name="confirm_password" placeholder="Confirm Password" required>
         <input type="file" name="profile_image" accept="image/*">
+        <select name="user_group" required>
+            <option value="2">Client</option>
+            <option value="3">Recipe Owner</option>
+    </select>
         <input type="submit" value="Sign Up">
     </form>
     <div class="switch">

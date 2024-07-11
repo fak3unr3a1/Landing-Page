@@ -10,6 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $target_dir = "uploads/";
     $target_file = $target_dir . basename($profile_image);
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+    $user_group = $_POST['user_group'];
 
     // Check if passwords match
     if ($password != $confirm_password) {
@@ -28,24 +29,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (move_uploaded_file($_FILES['profile_image']['tmp_name'], $target_file)) {
         $hashed_password = password_hash($password, PASSWORD_BCRYPT);
 
-        // Check if the username already exists
-        $sql = "SELECT id FROM users WHERE username='$username'";
-        $result = $conn->query($sql);
+        // Use prepared statement to insert user data
+        $sql = "INSERT INTO users (username, email, password, profile_image, user_group) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
 
-        if ($result->num_rows > 0) {
-            echo "Username already exists.";
+        // Bind parameters to statement
+        $stmt->bind_param("ssssi", $username, $email, $hashed_password, $profile_image, $user_group);
+
+        if ($stmt->execute()) {
+            // Start session and store user ID, username, and user group
+            session_start();
+            $_SESSION['id'] = $stmt->insert_id;
+            $_SESSION['username'] = $username;
+            $_SESSION['user_group'] = $user_group;
+
+            // Redirect based on user group
+            if ($user_group == 2) {
+                header("Location: index.php");
+            } elseif ($user_group == 3) {
+                header("Location: recipe_owner_dashboard.php");
+            }
             exit();
-        }
-
-        // Insert user data
-        $sql = "INSERT INTO users (username, email, password, profile_image) VALUES ('$username', '$email', '$hashed_password', '$profile_image')";
-
-        if ($conn->query($sql) === TRUE) {
-            echo "New user registered successfully";
-            header("Location: index.html"); // Redirect to home page after successful registration
         } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
+            echo "Error: " . $stmt->error;
         }
+
+        $stmt->close();
     } else {
         echo "Sorry, there was an error uploading your file.";
     }
