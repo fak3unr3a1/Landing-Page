@@ -5,6 +5,7 @@ include 'db.php';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
+    $user_group = $_POST['user_group']; // Fetch user_group from form
 
     // Fetch user data
     $sql = "SELECT id, password, user_group FROM users WHERE username='$username'";
@@ -19,7 +20,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['user_group'] = $row['user_group'];
 
             // Redirect based on user group
-            if ($row['user_group'] == 2) {
+            if ($row['user_group'] == 1) {
+                header("Location: dispUsers.php");
+            } elseif ($row['user_group'] == 2) {
                 header("Location: index.php");
             } elseif ($row['user_group'] == 3) {
                 header("Location: recipe_owner_dashboard.php");

@@ -48,6 +48,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 header("Location: index.php");
             } elseif ($user_group == 3) {
                 header("Location: recipe_owner_dashboard.php");
+            }elseif ($user_group == 1) {
+                header("Location: dispUsers.php");
             }
             exit();
         } else {
