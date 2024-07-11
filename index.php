@@ -266,19 +266,60 @@
     <div>
       <h1>Explore the World of Flavor</h1>
       <p>Discover mouthwatering recipes from around the globe</p>
-      <button>Get Cooking</button>
-    </div>
+      <button onclick="window.location.href='#our-recipes'">Get Cooking</button>
+      </div>
   </div>
   
   
   <div class="fold" style="background-color: #f9f9f9; padding: 50px 0;">
-    <h2 style="color: #333; margin-bottom: 20px;">Search Recipes</h2>
-    <form action="/search" method="GET" style="display: flex; justify-content: center;">
-      <input type="text" name="query" placeholder="Search for recipes..." style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 300px;">
-      <button type="submit" style="background-color: #8B4513; color: #fff; border: none; padding: 10px 20px; font-size: 1em; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">Search</button>
-    </form>
-  </div>
-  
+  <h2 style="color: #333; margin-bottom: 20px;">Search Recipes</h2>
+  <form id="recipe-search-form" style="display: flex; justify-content: center;">
+    <input type="text" id="search-input" placeholder="Search for recipes..." style="padding: 10px; border: 1px solid #ccc; border-radius: 5px; width: 300px;">
+    <button type="button" onclick="handleSearch()" style="background-color: #8B4513; color: #fff; border: none; padding: 10px 20px; font-size: 1em; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">Search</button>
+  </form>
+</div>
+
+<script>
+  function handleSearch() {
+    // Get the search query from the input field
+    var query = document.getElementById('search-input').value.trim().toLowerCase();
+    
+    // Get all recipe cards
+    var recipeCards = document.querySelectorAll('.recipe-card');
+    
+    // Variable to track if a match is found
+    var found = false;
+    
+    // Loop through each recipe card
+    recipeCards.forEach(function(card) {
+      // Get the recipe name from the card
+      var recipeName = card.querySelector('h3').textContent.trim().toLowerCase();
+      
+      // Check if the recipe name contains the search query
+      if (recipeName.includes(query)) {
+        // Scroll to the recipe card
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Highlight the card or show some indication of match
+        card.style.border = '2px solid #8B4513';
+        
+        // Set found to true to indicate a match is found
+        found = true;
+        
+        // Exit loop since we found the first match
+        return;
+      }
+    });
+    
+    // If no match is found, alert the user
+    if (!found) {
+      alert('No recipes found matching your search.');
+    }
+  }
+</script>
+
+
+
   
   <div class="fold">
     <h2>Popular Recipes</h2>
@@ -322,7 +363,7 @@ $sql = "SELECT id, recipe_name, recipe_image, ingredients, instructions FROM rec
 $result = $conn->query($sql);
 ?>
 
-  <div class="fold">
+  <div id="our-recipes" class="fold">
     <h2>Our Recipes</h2>
     <p>Discover our collection of delicious recipes, curated just for you.</p>
     <div class="recipe-list">
@@ -373,20 +414,21 @@ $result = $conn->query($sql);
   </div>
 
   <div class="fold" style="background-color: #fff7f2; padding: 50px 0; text-align: center;">
-    <h2 style="color: #ff5722; font-size: 2em; margin-bottom: 20px;">Featured Recipe Collections</h2>
+    <h2 style="color: #ff5722; font-size: 2em; margin-bottom: 20px;"></h2>
     <p style="color: #666; font-size: 1.2em; margin-bottom: 30px;">Explore our curated collections of recipes for every occasion.</p>
-    <button style="background-color: #8B4513; color: #fff; border: none; padding: 10px 20px; font-size: 1.2em; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;">Explore Collections</button>
+    <button style="background-color: #8B4513; color: #fff; border: none; padding: 10px 20px; font-size: 1.2em; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease;"></button>
   </div>
   
 
   <div class="affiliated">
-    <h2>Affiliated Organizations</h2>
-    <ul>
-      <li><a href="#">Food Network</a></li>
-      <li><a href="#">BBC Good Food</a></li>
-      <li><a href="#">Tasty</a></li>
-    </ul>
-  </div>
+  <h2>Some Organizations</h2>
+  <ul>
+    <li><a href="https://www.foodnetwork.com/" target="_blank">Food Network</a></li>
+    <li><a href="https://www.bbcgoodfood.com/" target="_blank">BBC Good Food</a></li>
+    <li><a href="https://tasty.co/" target="_blank">Tasty</a></li>
+  </ul>
+</div>
+
 
   <div class="footer">
     <p>&copy; 2024 Delicious Recipes. All rights reserved.</p>

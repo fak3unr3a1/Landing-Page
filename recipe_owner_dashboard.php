@@ -1,22 +1,3 @@
-<?php
-session_start();
-include 'db.php';
-
-// Check if the user is logged in and is a Recipe Owner
-if (!isset($_SESSION['id']) || $_SESSION['user_group'] != 3) {
-    header("Location: signin.php");
-    exit();
-}
-
-$user_id = $_SESSION['id'];
-
-// Fetch the recipes of the logged-in user
-$sql = "SELECT id, recipe_name, recipe_image, ingredients, instructions FROM recipes WHERE user_id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,6 +74,19 @@ $result = $stmt->get_result();
 
 <div class="header">
     <h1>Recipe Owner Dashboard</h1>
+    <?php
+    session_start();
+    include 'db.php';
+
+    // Check if the user is logged in and is a Recipe Owner
+    if (!isset($_SESSION['id']) || $_SESSION['user_group'] != 3) {
+        header("Location: signin.php");
+        exit();
+    }
+
+    // Display the logged-in username
+    echo "<p>Welcome, " . $_SESSION['username'] . "!</p>";
+    ?>
 </div>
 
 <div class="container">
@@ -101,6 +95,15 @@ $result = $stmt->get_result();
     <div class="recipes">
         <h2>Your Recipes</h2>
         <?php
+        $user_id = $_SESSION['id'];
+
+        // Fetch the recipes of the logged-in user
+        $sql = "SELECT id, recipe_name, recipe_image, ingredients, instructions FROM recipes WHERE user_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $user_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 echo "<div class='recipe-card'>";
